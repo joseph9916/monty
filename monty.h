@@ -1,5 +1,10 @@
 #ifndef MONTY_H
 #define MONTY_H
+#define _POSIX_C_SOURCE 200809L
+#include <stddef.h>
+#include <stdio.h>
+
+extern char **opargs;
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -10,11 +15,12 @@
  * Description: doubly linked list node structure
  * for stack, queues, LIFO, FIFO
  */
+
 typedef struct stack_s
 {
-        int n;
-        struct stack_s *prev;
-        struct stack_s *next;
+	int n;
+	struct stack_s *prev;
+	struct stack_s *next;
 } stack_t;
 
 /**
@@ -25,19 +31,23 @@ typedef struct stack_s
  * Description: opcode and its function
  * for stack, queues, LIFO, FIFO
  */
+
 typedef struct instruction_s
 {
-        char *opcode;
-        void (*f)(stack_t **stack, unsigned int line_number);
+	char *opcode;
+	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-extern stack_t *head = NULL;
-extern stack_t *tail = NULL;
-
+void free_args(void);
+void exit_malloc(void);
 void exit_usage(void);
 void exit_open(const char *filename);
-stack_t *add_snodeint(const int n);
-stack_t *add_snodeint_end(const int n);
-void free_stackint();
+void getop(char *line);
+void (*get_instruction(void))(stack_t **, unsigned int);
+void push(stack_t **stack, unsigned int line_number);
+void pall(stack_t **stack, unsigned int __attribute__ ((unused)) line_number);
+void pop(stack_t **stack, unsigned int line_number);
+void pint(stack_t **stack, unsigned int line_number);
+void free_stack(stack_t *stack);
 
 #endif
