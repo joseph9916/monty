@@ -17,6 +17,7 @@ void exit_malloc(void)
 
 /**
  * getop - get operations from line
+ * @line: line input
  * Return: Nothing
  */
 
@@ -53,6 +54,8 @@ void (*get_instruction(void))(stack_t **, unsigned int)
 		{"pop", pop},
 		{"pint", pint},
 		{"pall", pall},
+		{"swap", swap},
+		{"nop", nop},
 		{NULL, NULL}
 	};
 	int i;
@@ -82,9 +85,12 @@ void push(stack_t **stack, unsigned int line_number)
 		free_stack(*stack);
 		exit_malloc();
 	}
-	if (!opargs[1])
+	if ((!opargs[1]) || (strspn(opargs[1], "0123456789")
+			!= strlen(opargs[1])))
 	{
-		free_stack(*stack);
+		free_args();
+		if (*stack)
+			free_stack(*stack);
 		fprintf(stderr, "L%u: usage: push integer\n", line_number);
 		exit(EXIT_FAILURE);
 	}
