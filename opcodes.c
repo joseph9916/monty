@@ -62,16 +62,16 @@ void pint(stack_t **stack, unsigned int line_number)
 
 void swap(stack_t **stack, unsigned int line_number)
 {
-	stack_t *temp, *first = *stack, *second = ((*stack)->next);
+	stack_t *temp, *first = *stack, *second;
 
-	if ((!*stack) || (!((*stack)->next)))
+	if (!*stack)
+		exit_swap(line_number);
+	if (!((*stack)->next))
 	{
-		free_args();
 		free_stack(*stack);
-		fprintf(stderr, "L%u: can't swap, stack too short\n", line_number);
-		exit(EXIT_FAILURE);
+		exit_swap(line_number);
 	}
-
+	second = ((*stack)->next);
 	temp = malloc(sizeof(stack_t));
 	if (second->next)
 	{
